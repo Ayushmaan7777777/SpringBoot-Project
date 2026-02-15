@@ -53,8 +53,19 @@ public class EntityController {
 
     @PostMapping("/register")
     public boolean saveUser(@RequestBody EntityOfUser entityOfUser) {
-        entityServices.save(entityOfUser);
-        return true;
+        String userName = entityOfUser.getUserName();
+        String password = entityOfUser.getPassword();
+        String email = entityOfUser.getEmail();
+        if(entityServices.findById(userName) == null) {
+            entityServices.save(entityOfUser);
+            return true;
+        }
+        else if(userName.isEmpty() || email.isEmpty() || password.isEmpty()) {
+            return false;
+        }
+        else {
+            return false;
+        }
     }
 
     @DeleteMapping

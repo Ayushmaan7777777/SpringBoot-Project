@@ -1,35 +1,34 @@
 import React, { useEffect, useState } from 'react'
 import './App.css'
 import axios from 'axios';
-import Chai from './Chai';
+import Register from './routes/Register'
+import Logout from './routes/Logout';
+import Login from './routes/Login';
+import { Route, Routes } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'; 
+import Alldata from './routes/Alldata';
 
+ 
 function App() {
-  const [response, setResponse] = useState({data: []});
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get('http://localhost:8080/newdb/getall');
-        setResponse(res);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
-  
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    navigate('/');
+  }
+  const handleLogin = () => {
+    navigate('/logout');
+  }
+  const handleRegister = () => {
+    navigate('/login');
+  }
 
   return (
     <>
-    <h1>Users List</h1>
-     <h3>
-      {response.data.map((user, index) => (
-        <>
-        <Chai key={index} user={user} />
-        </>
-      ))}
-     </h3>
+     <Routes>
+      <Route path='/' element={<Register handleRegister={handleRegister} />} />
+      <Route path='/login' element={<Login handleLogin={handleLogin} />} />
+      <Route path='/logout' element={<Logout handleLogout={handleLogout} />} />
+      <Route path='/alldata' element={<Alldata />} />
+    </Routes>
     </>
   ) 
 }
